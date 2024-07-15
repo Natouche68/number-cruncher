@@ -12,7 +12,10 @@
 		expressionParts.forEach((char) => {
 			if (char === "(") {
 				openParentheses++;
-			} else if (isNaN(Number(char)) && openParentheses > 0) {
+			} else if (
+				!(!isNaN(Number(char)) || char === ".") &&
+				openParentheses > 0
+			) {
 				result += ")";
 				openParentheses--;
 			}
