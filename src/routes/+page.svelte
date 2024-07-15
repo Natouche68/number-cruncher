@@ -1,7 +1,31 @@
 <script lang="ts">
+	import * as math from "mathjs";
 	import Button from "$lib/Button.svelte";
 
 	let expression = "";
+
+	function calculate() {
+		const expressionParts = expression.replaceAll("√", "sqrt(").split("");
+
+		let result = "";
+		let openParentheses = 0;
+		expressionParts.forEach((char) => {
+			if (char === "(") {
+				openParentheses++;
+			} else if (isNaN(Number(char)) && openParentheses > 0) {
+				result += ")";
+				openParentheses--;
+			}
+
+			result += char;
+		});
+
+		result += ")".repeat(openParentheses);
+
+		console.log(result);
+
+		expression = math.evaluate(result);
+	}
 </script>
 
 {expression}
@@ -30,6 +54,6 @@
 	<Button text="," onClick={() => (expression += ".")} />
 	<Button text="0" onClick={() => (expression += "0")} />
 	<div class="col-span-2">
-		<Button text="=" onClick={() => (expression = eval(expression))} />
+		<Button text="=" onClick={calculate} />
 	</div>
 </div>
