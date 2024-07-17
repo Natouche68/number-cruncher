@@ -20,6 +20,9 @@ export default {
 			DEFAULT:
 				"inset 0.3rem 0.3rem 1rem #ffffff50, 0.4rem 0.8rem 1rem #00000060",
 		},
+		dropShadow: {
+			DEFAULT: "0.4rem 0.8rem 1rem #00000060",
+		},
 	},
 
 	plugins: [],
