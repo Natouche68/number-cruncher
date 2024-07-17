@@ -25,8 +25,6 @@
 
 		result += ")".repeat(openParentheses);
 
-		console.log(result);
-
 		expression = math.evaluate(result);
 	}
 </script>
