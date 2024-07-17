@@ -31,32 +31,34 @@
 	}
 </script>
 
-{expression}
+<div class="flex flex-col justify-end bg-raisin-black text-white h-dvh">
+	{expression}
 
-<div class="grid grid-rows-5 grid-cols-4 gap-4">
-	<Button text="C" onClick={() => (expression = "")} />
-	<Button text="^" onClick={() => (expression += "^")} />
-	<Button text="√" onClick={() => (expression += "√")} />
-	<Button text="/" onClick={() => (expression += "/")} />
+	<div class="grid grid-rows-5 grid-cols-4 gap-4 p-4">
+		<Button text="C" style="normal" on:click={() => (expression = "")} />
+		<Button text="^" style="normal" on:click={() => (expression += "^")} />
+		<Button text="√" style="normal" on:click={() => (expression += "√")} />
+		<Button text="/" style="primary" on:click={() => (expression += "/")} />
 
-	<Button text="7" onClick={() => (expression += "7")} />
-	<Button text="8" onClick={() => (expression += "8")} />
-	<Button text="9" onClick={() => (expression += "9")} />
-	<Button text="*" onClick={() => (expression += "*")} />
+		<Button text="7" style="normal" on:click={() => (expression += "7")} />
+		<Button text="8" style="normal" on:click={() => (expression += "8")} />
+		<Button text="9" style="normal" on:click={() => (expression += "9")} />
+		<Button text="*" style="primary" on:click={() => (expression += "*")} />
 
-	<Button text="4" onClick={() => (expression += "4")} />
-	<Button text="5" onClick={() => (expression += "5")} />
-	<Button text="6" onClick={() => (expression += "6")} />
-	<Button text="-" onClick={() => (expression += "-")} />
+		<Button text="4" style="normal" on:click={() => (expression += "4")} />
+		<Button text="5" style="normal" on:click={() => (expression += "5")} />
+		<Button text="6" style="normal" on:click={() => (expression += "6")} />
+		<Button text="-" style="primary" on:click={() => (expression += "-")} />
 
-	<Button text="1" onClick={() => (expression += "1")} />
-	<Button text="2" onClick={() => (expression += "2")} />
-	<Button text="3" onClick={() => (expression += "3")} />
-	<Button text="+" onClick={() => (expression += "+")} />
+		<Button text="1" style="normal" on:click={() => (expression += "1")} />
+		<Button text="2" style="normal" on:click={() => (expression += "2")} />
+		<Button text="3" style="normal" on:click={() => (expression += "3")} />
+		<Button text="+" style="primary" on:click={() => (expression += "+")} />
 
-	<Button text="," onClick={() => (expression += ".")} />
-	<Button text="0" onClick={() => (expression += "0")} />
-	<div class="col-span-2">
-		<Button text="=" onClick={calculate} />
+		<Button text="," style="normal" on:click={() => (expression += ".")} />
+		<Button text="0" style="normal" on:click={() => (expression += "0")} />
+		<div class="col-span-2">
+			<Button text="=" style="special" on:click={calculate} />
+		</div>
 	</div>
 </div>
