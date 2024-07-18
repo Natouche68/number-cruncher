@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { slide, crossfade } from "svelte/transition";
+	import { slide, crossfade, fade } from "svelte/transition";
 	import { backInOut } from "svelte/easing";
 	import * as math from "mathjs";
 	import Button from "$lib/Button.svelte";
@@ -120,7 +120,10 @@
 				/>
 			{/each}
 		</div>
-		<div class="px-4 py-2 flex flex-row justify-end items-center">
+		<div
+			class="px-4 py-2 flex flex-row justify-end items-center"
+			in:fade={{ duration: 400, easing: backInOut }}
+		>
 			{#each calculatedResult.split("") as resultCharacter}
 				<img
 					src="/characters/{getCharacterImg(resultCharacter)}"
