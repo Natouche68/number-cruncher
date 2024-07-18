@@ -1,10 +1,17 @@
 <script lang="ts">
+	import { slide, crossfade } from "svelte/transition";
+	import { backInOut } from "svelte/easing";
 	import * as math from "mathjs";
 	import Button from "$lib/Button.svelte";
 
 	let expression = "";
 	let calculatedResult = "";
 	let history: string[] = [];
+
+	const [send, receive] = crossfade({
+		duration: 400,
+		easing: backInOut,
+	});
 
 	function clear() {
 		expression = "";
@@ -87,17 +94,24 @@
 	{/each}
 
 	{#if calculatedResult === ""}
-		<div class="px-4 py-2 flex flex-row justify-end items-center">
-			{#each expression.split("") as character}
+		<div
+			class="px-4 py-2 flex flex-row justify-end items-center"
+			out:send={{ key: "expression" }}
+		>
+			{#each expression.split("") as character, i (i)}
 				<img
 					src="/characters/{getCharacterImg(character)}"
 					alt={character}
 					class="h-16 drop-shadow"
+					in:slide={{ duration: 400, easing: backInOut, axis: "x" }}
 				/>
 			{/each}
 		</div>
 	{:else}
-		<div class="px-4 py-2 flex flex-row justify-end items-center">
+		<div
+			class="px-4 py-2 flex flex-row justify-end items-center"
+			in:receive={{ key: "expression" }}
+		>
 			{#each expression.split("") as character}
 				<img
 					src="/characters/{getCharacterImg(character)}"
