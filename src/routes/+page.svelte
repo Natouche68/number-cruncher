@@ -4,6 +4,7 @@
 
 	let expression = "";
 	let calculatedResult = "";
+	let history: string[] = [];
 
 	function clear() {
 		expression = "";
@@ -12,6 +13,9 @@
 
 	function addToExpression(toAdd: string) {
 		if (calculatedResult !== "") {
+			history.push(expression + calculatedResult);
+			history = history;
+
 			expression = "";
 			calculatedResult = "";
 		}
@@ -41,12 +45,16 @@
 		result += ")".repeat(openParentheses);
 
 		calculatedResult = String(math.evaluate(result));
+
+		expression += "=";
 	}
 
 	function getCharacterImg(character: string): string {
 		switch (character) {
 			case ".":
 				return "dot.png";
+			case "=":
+				return "equal.png";
 			case "+":
 				return "plus.png";
 			case "-":
@@ -66,6 +74,18 @@
 </script>
 
 <div class="flex flex-col justify-end bg-raisin-black text-white h-dvh">
+	{#each history as historyElement}
+		<div class="px-4 py-2 flex flex-row justify-end items-center">
+			{#each historyElement.split("") as character}
+				<img
+					src="/characters/{getCharacterImg(character)}"
+					alt={character}
+					class="h-4 drop-shadow"
+				/>
+			{/each}
+		</div>
+	{/each}
+
 	{#if calculatedResult === ""}
 		<div class="px-4 py-2 flex flex-row justify-end items-center">
 			{#each expression.split("") as character}
