@@ -8,6 +8,7 @@
 	let expression = "";
 	let calculatedResult = "";
 	let history: string[] = [];
+	let clearText: "AC" | "C" = "C";
 
 	const [send, receive] = crossfade({
 		duration: 400,
@@ -17,6 +18,13 @@
 	function clear() {
 		expression = "";
 		calculatedResult = "";
+
+		if (clearText === "AC") {
+			history = [];
+			clearText = "C";
+		} else if (clearText === "C" && history.length > 0) {
+			clearText = "AC";
+		}
 	}
 
 	function addToExpression(toAdd: string) {
@@ -32,6 +40,7 @@
 		}
 
 		expression += toAdd;
+		clearText = "C";
 	}
 
 	function calculate() {
@@ -155,7 +164,7 @@
 	</div>
 
 	<div class="grid grid-rows-5 grid-cols-4 gap-4 p-4">
-		<Button text="C" style="normal" on:click={clear} />
+		<Button text={clearText} style="normal" on:click={clear} />
 		<Button text="^" style="normal" on:click={() => addToExpression("^")} />
 		<Button text="√" style="normal" on:click={() => addToExpression("√")} />
 		<Button text="/" style="primary" on:click={() => addToExpression("/")} />
