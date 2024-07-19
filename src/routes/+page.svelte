@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from "svelte";
 	import { slide, crossfade, fade } from "svelte/transition";
 	import { flip } from "svelte/animate";
 	import { backInOut } from "svelte/easing";
@@ -15,12 +16,17 @@
 		easing: backInOut,
 	});
 
+	onMount(() => {
+		history = JSON.parse(localStorage.getItem("history") || "[]");
+	});
+
 	function clear() {
 		expression = "";
 		calculatedResult = "";
 
 		if (clearText === "AC") {
 			history = [];
+			localStorage.removeItem("history");
 			clearText = "C";
 		} else if (clearText === "C" && history.length > 0) {
 			clearText = "AC";
@@ -34,6 +40,8 @@
 				history.shift();
 			}
 			history = history;
+
+			localStorage.setItem("history", JSON.stringify(history));
 
 			expression = "";
 			calculatedResult = "";
