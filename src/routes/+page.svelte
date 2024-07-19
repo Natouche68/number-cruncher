@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { slide, crossfade, fade } from "svelte/transition";
+	import { flip } from "svelte/animate";
 	import { backInOut } from "svelte/easing";
 	import * as math from "mathjs";
 	import Button from "$lib/Button.svelte";
@@ -21,6 +22,9 @@
 	function addToExpression(toAdd: string) {
 		if (calculatedResult !== "") {
 			history.push(expression + calculatedResult);
+			if (history.length > 6) {
+				history.shift();
+			}
 			history = history;
 
 			expression = "";
@@ -80,59 +84,69 @@
 	}
 </script>
 
-<div class="flex flex-col justify-end bg-raisin-black text-white h-dvh">
-	{#each history as historyElement}
-		<div class="px-4 py-2 flex flex-row justify-end items-center">
-			{#each historyElement.split("") as character}
-				<img
-					src="/characters/{getCharacterImg(character)}"
-					alt={character}
-					class="h-4 drop-shadow"
-				/>
-			{/each}
-		</div>
-	{/each}
-
-	{#if calculatedResult === ""}
-		<div
-			class="px-4 py-2 flex flex-row justify-end items-center"
-			out:send={{ key: "expression" }}
-		>
-			{#each expression.split("") as character, i (i)}
-				<img
-					src="/characters/{getCharacterImg(character)}"
-					alt={character}
-					class="h-16 drop-shadow"
-					in:slide={{ duration: 400, easing: backInOut, axis: "x" }}
-				/>
-			{/each}
-		</div>
-	{:else}
-		<div
-			class="px-4 py-2 flex flex-row justify-end items-center"
-			in:receive={{ key: "expression" }}
-		>
-			{#each expression.split("") as character}
-				<img
-					src="/characters/{getCharacterImg(character)}"
-					alt={character}
-					class="h-8 drop-shadow"
-				/>
-			{/each}
-		</div>
-		<div
-			class="px-4 py-2 flex flex-row justify-end items-center"
-			in:fade={{ duration: 400, easing: backInOut }}
-		>
-			{#each calculatedResult.split("") as resultCharacter}
-				<img
-					src="/characters/{getCharacterImg(resultCharacter)}"
-					alt={resultCharacter}
-					class="h-16 drop-shadow"
-				/>
+<div class="h-dvh flex flex-col justify-end bg-raisin-black text-white">
+	{#if history.length > 0}
+		<div class="mx-4 border-b-2 border-light-blue">
+			{#each history as historyElement (historyElement)}
+				<div
+					class="py-2 flex flex-row justify-end items-center"
+					transition:fade={{ duration: 400, easing: backInOut }}
+					animate:flip={{ duration: 400, easing: backInOut }}
+				>
+					{#each historyElement.split("") as character}
+						<img
+							src="/characters/{getCharacterImg(character)}"
+							alt={character}
+							class="h-4 drop-shadow"
+						/>
+					{/each}
+				</div>
 			{/each}
 		</div>
 	{/if}
+
+	<div class="h-40 flex flex-col justify-end items-end">
+		{#if calculatedResult === ""}
+			<div
+				class="px-4 py-2 flex flex-row justify-end items-center"
+				out:send={{ key: "expression" }}
+			>
+				{#each expression.split("") as character, i (i)}
+					<img
+						src="/characters/{getCharacterImg(character)}"
+						alt={character}
+						class="h-16 drop-shadow"
+						in:slide={{ duration: 400, easing: backInOut, axis: "x" }}
+					/>
+				{/each}
+			</div>
+		{:else}
+			<div
+				class="px-4 py-2 flex flex-row justify-end items-center"
+				in:receive={{ key: "expression" }}
+			>
+				{#each expression.split("") as character}
+					<img
+						src="/characters/{getCharacterImg(character)}"
+						alt={character}
+						class="h-8 drop-shadow"
+					/>
+				{/each}
+			</div>
+			<div
+				class="px-4 py-2 flex flex-row justify-end items-center"
+				in:fade={{ duration: 400, easing: backInOut }}
+			>
+				{#each calculatedResult.split("") as resultCharacter}
+					<img
+						src="/characters/{getCharacterImg(resultCharacter)}"
+						alt={resultCharacter}
+						class="h-16 drop-shadow"
+					/>
+				{/each}
+			</div>
+		{/if}
+	</div>
 
 	<div class="grid grid-rows-5 grid-cols-4 gap-4 p-4">
 		<Button text="C" style="normal" on:click={clear} />
