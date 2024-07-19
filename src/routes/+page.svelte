@@ -56,8 +56,12 @@
 		result += ")".repeat(openParentheses);
 
 		calculatedResult = String(math.evaluate(result));
-
 		expression += "=";
+
+		if (calculatedResult.length >= 10) {
+			calculatedResult = calculatedResult.slice(0, 10);
+			expression = expression.replace("=", "≈");
+		}
 	}
 
 	function getCharacterImg(character: string): string {
@@ -66,6 +70,8 @@
 				return "dot.png";
 			case "=":
 				return "equal.png";
+			case "≈":
+				return "approx.png";
 			case "+":
 				return "plus.png";
 			case "-":
@@ -137,11 +143,11 @@
 				class="px-4 py-2 flex flex-row justify-end items-center"
 				in:fade={{ duration: 400, easing: backInOut }}
 			>
-				{#each calculatedResult.split("") as resultCharacter}
+				{#each calculatedResult.split("") as character}
 					<img
-						src="/characters/{getCharacterImg(resultCharacter)}"
-						alt={resultCharacter}
-						class="h-16 drop-shadow"
+						src="/characters/{getCharacterImg(character)}"
+						alt={character}
+						class="{calculatedResult.length > 6 ? 'h-10' : 'h-16'} drop-shadow"
 					/>
 				{/each}
 			</div>
